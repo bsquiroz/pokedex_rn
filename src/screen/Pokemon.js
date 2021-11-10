@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import { Text, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { getPokemonId } from "../api/pokemon";
 import { Header } from "../components/Pokemon/Header";
 import { Stats } from "../components/Pokemon/Stats";
 import { Type } from "../components/Pokemon/Type";
+import { Favorite } from "../components/Pokemon/Favorite";
+import useAuth from "../hooks/useAuth";
 
 export const Pokemon = ({ route, navigation }) => {
     const id = route.params.id;
+
+    const { auth } = useAuth();
 
     const [currentPokemon, setCurrentPokemon] = useState(null);
 
     useEffect(() => {
         navigation.setOptions({
-            headerRight: () => null,
+            headerRight: () => auth && <Favorite idPoke={id} />,
+
             headerLeft: () => (
                 <Icon
                     name="arrow-left"
-                    color="#000"
+                    color="#fff"
                     size={30}
                     style={{ marginLeft: 20 }}
                     onPress={navigation.goBack}
