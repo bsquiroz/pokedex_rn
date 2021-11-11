@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import { StyleSheet, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { getPokemonId } from "../api/pokemon";
 import { Header } from "../components/Pokemon/Header";
 import { Stats } from "../components/Pokemon/Stats";
@@ -68,11 +68,3 @@ export const Pokemon = ({ route, navigation }) => {
         </ScrollView>
     );
 };
-
-const styles = StyleSheet.create({
-    containerPokemon: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-});

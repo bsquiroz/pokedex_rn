@@ -1,9 +1,21 @@
-import React from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import React, { useState, useCallback } from "react";
 import { Text, View, StyleSheet, Button } from "react-native";
+import { getPokemonFavorite } from "../../api/favorite";
 import useAuth from "../../hooks/useAuth";
 
 export const UserData = () => {
+    const [totalPokemon, setTotalPokemon] = useState(0);
     const { logout, auth } = useAuth();
+
+    useFocusEffect(
+        useCallback(() => {
+            (async () => {
+                const response = await getPokemonFavorite();
+                setTotalPokemon(response.length);
+            })();
+        }, [])
+    );
 
     return (
         <View style={styles.contentUserData}>
@@ -22,7 +34,8 @@ export const UserData = () => {
                 <ItenMenu title={"Email"} text={auth.email} />
                 <ItenMenu
                     title={"Total de favoritos"}
-                    text={"Todavia ninguno"}
+                    text={totalPokemon}
+                    func
                 />
             </View>
             <Button title="Cerrar sesión" onPress={() => logout()} />
@@ -30,11 +43,22 @@ export const UserData = () => {
     );
 };
 
-function ItenMenu({ title, text }) {
+function ItenMenu({ title, text, func }) {
+    const navigation = useNavigation();
+    const goToFavorites = () => {
+        navigation.navigate("favorite");
+    };
     return (
         <View style={styles.itenMenu}>
             <Text style={styles.itenMenuTitle}>{title}: </Text>
-            <Text>{text}</Text>
+            {func ? (
+                <>
+                    <Text>{text}</Text>
+                    <Button title="ver los favoritos" onPress={goToFavorites} />
+                </>
+            ) : (
+                <Text>{text}</Text>
+            )}
         </View>
     );
 }
@@ -54,6 +78,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         borderBottomWidth: 1,
         borderColor: "#cfcfcf",
+        alignItems: "center",
     },
     itenMenuTitle: {
         fontWeight: "bold",
