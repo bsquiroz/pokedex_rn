@@ -21,7 +21,7 @@ const renderPokeBall = () => {
 
 export const Navigation = () => {
     return (
-        <tab.Navigator>
+        <tab.Navigator initialRouteName="pokedex">
             <tab.Screen
                 name="favorite"
                 component={FavoriteNav}
